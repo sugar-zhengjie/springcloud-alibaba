@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/src/main/resources/archetype-resources" includeSubdirectories="true" />
+    </excludeFromCompile>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Order" />
+        <module name="Product" />
+        <module name="Skill" />
+        <module name="User" />
+        <module name="ShopCart" />
+        <module name="Stock" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Common" target="1.8" />
+      <module name="Order-Serv" target="1.8" />
+      <module name="OrderServ" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Common" options="-parameters" />
+      <module name="Order" options="-parameters" />
+      <module name="Order-Serv" options="-parameters" />
+      <module name="Product" options="-parameters" />
+      <module name="ShopCart" options="-parameters" />
+      <module name="ShopDemoParent" options="" />
+      <module name="Skill" options="-parameters" />
+      <module name="Stock" options="-parameters" />
+      <module name="User" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,3 @@
+# Project exclude paths
+/Order/target/
+/Stock/target/

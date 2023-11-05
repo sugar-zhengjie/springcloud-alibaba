@@ -1,0 +1,8 @@
+server:
+  port: 12001
+spring:
+  cloud:
+    nacos:
+      discovery:
+        service: stock
+        server-addr: localhost:8848

@@ -1,0 +1,8 @@
+server:
+  port: 13000
+spring:
+  cloud:
+    nacos:
+      discovery:
+        service: shopcart
+        server-addr: localhost:8848

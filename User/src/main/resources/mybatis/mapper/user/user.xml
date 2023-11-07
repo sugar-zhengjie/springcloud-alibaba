@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cf.epay.biz.compliance.review.dao.ComplianceUserMapper" >
+
+    <select id="selectComplianceSysUser" resultType="com.cf.common.business.dto.EpayUser">
+        SELECT
+            sc.id as userId,
+            sc.name as userName,
+            sc.email,
+            sc.mobile as phone,
+            sc.status,
+            sc.created_date,
+            role.role_code as userType
+        FROM
+            compliance_sys_cloud sc
+                inner join compliance_tr_user_role tr
+                           on tr.user_id = sc.id
+                inner join compliance_role role
+                           on role.id = tr.role_id
+        WHERE
+            sc.delete_flag = 0
+          and sc.cloud_user_id = #{cloudId}
+    </select>
+
+    <resultMap id="UserInfoMap" type="com.cf.epay.biz.compliance.review.dto.ComplianceUserDto">
+        <id column="userId" property="userId"/>
+        <id column="cloudId" property="cloudUserId"/>
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="mobile" property="mobile"/>
+        <result column="status" property="status"/>
+        <result column="created_date" property="createdDate"/>
+    </resultMap>
+
+    <select id="selectUserInfoByPage" resultMap="UserInfoMap">
+        SELECT
+        sc.id as userId,
+        sc.cloud_user_id as cloudId,
+        sc.name,
+        sc.email,
+        sc.mobile,
+        sc.status,
+        sc.created_date,
+        tr.id as refId,
+        tr.project_id
+        FROM
+        `compliance_sys_cloud` sc
+        left JOIN compliance_tr_user_project tr
+        on sc.id = tr.user_id
+        <where>
+            <if test="signCondition != null and signCondition!= ''">
+                sc.`name` like concat( '%',#{signCondition},'%')
+                or sc.email like concat('%',#{signCondition},'%')
+            </if>
+            and sc.delete_flag = 0
+        </where>
+    </select>
+
+    <select id="selectEpayUserId" resultType="java.lang.Long">
+        SELECT
+            su.id
+        FROM
+            `compliance_sys_cloud` sc
+                left JOIN sys_user su on su.email = sc.email
+        where sc.id =#{userId}
+    </select>
+
+    <select id="selectUserProjectList" resultType="com.cf.epay.biz.compliance.review.dto.user.UserProjectInfoDto">
+        SELECT
+            USER.id AS userId,
+            USER.cloud_user_id AS cloudUserId,
+            project.system_name,
+            project.id AS projectId,
+            project.project_no AS projectNo ,
+            project.project_name AS projectName
+        FROM
+            `compliance_sys_cloud`
+            USER INNER JOIN compliance_tr_user_project tr ON USER.id = tr.user_id
+            INNER JOIN compliance_project project ON project.id = tr.project_id
+        WHERE
+            user.id = #{userId}
+          and user.status = 0
+    </select>
+</mapper>

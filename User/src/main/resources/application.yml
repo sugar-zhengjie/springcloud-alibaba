@@ -1,8 +1,150 @@
-server:
-  port: 11000
+#spring配置
 spring:
-  cloud:
-    nacos:
-      discovery:
-        service: user
-        server-addr: localhost:8848
+  profiles:
+    active: dev
+  #spring数据库｜redis配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      allow-pool-suspension: true
+      connection-test-query: select 1
+      connection-timeout: 30000
+      leak-detection-threshold: 5000
+      maximum-pool-size: 8
+      minimum-idle: 0
+      pool-name: cfHikariCP
+    username: root
+    password: zzzz1111
+    url: jdbc:mysql://127.0.0.1:3307/user?connectTimeout=5000&socketTimeout=10000&autoReconnect=true&useSSL=false&characterEncoding=utf-8
+  jpa:
+    show-sql: true
+  redis:
+    #redis缓存失效时间(单位:秒)
+    expireTime: 1800
+    database: 1
+    enabled: true
+    host: 127.0.0.1
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 8
+        max-wait: 1000
+        min-idle: 5
+    #   password: 123456
+    port: 6379
+  mail:
+    host: smtpdm.aliyun.com
+    username: noreply@email.jxedc.com
+    password: ABcd123456
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+          starttls:
+            enable: true
+            required: true
+
+  #file大小设置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 931775308
+      max-request-size: 100MB
+
+#mybatis
+mybatis-plus:
+  config-location: classpath:config/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.zj.entity
+
+#接口文档前端
+knife4j:
+  #开启增强
+  enable: true
+  #是否开启生产环境保护策略
+  production: false
+
+#接口文档
+swagger:
+  enable: true
+  web-packages:
+    - com.zj.shop
+    - com.zj.plugin
+  title: Shop系统
+  description: API
+  termsOfServiceUrl: http://localhost:8080/shop
+  contact:
+    name: abc
+    url:
+    email:
+  version: 1.0.0
+
+#线程池配置
+thread:
+  pool:
+    allowCoreThreadTimeOut: true
+    corePoolSize: 1
+    enabled: true
+    keepAliveSeconds: 30
+    maxPoolSize: 16
+    queueCapacity: 32
+
+xxl:
+  job:
+    admin:
+      addresses: http://172.18.20.188:8080/xxl-job-admin
+      username: admin
+      password: 123456
+    accessToken: default_token
+    executor:
+      appname: xxl-job-executor-shop-dev
+      address:
+      port: 5478
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
+
+#配置日志地址
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com:
+      alibaba:
+        cloud:
+          nacos:
+            refresh:
+              NacosContextRefresher: DEBUG
+      cf:
+        core: DEBUG
+        core.framework.thread: ERROR
+        epay: DEBUG
+      ibatis: DEBUG
+      netflix:
+        config:
+          sources:
+            URLConfigurationSource: ERROR
+        hystrix:
+          strategy:
+            properties:
+              HystrixPropertiesChainedProperty: DEBUG
+      ulisesbocchio:
+        jasyptspringboot:
+          EncryptablePropertySourceConverter: ERROR
+    org:
+      springframework:
+        boot:
+          actuate:
+            endpoint:
+              EndpointId: ERROR
+    root: WARN
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+

@@ -1,0 +1,79 @@
+spring:
+  cloud:
+    compatibility-verifier:
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true
+    lazy-initialization: false
+  profiles:
+    active: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        file-extension: yaml
+        server-addr: ${nacos.server.addr:localhost:8848}
+        namespace: shop
+        group: shop-dev
+        shared-configs:
+          - dataId: shop-user-dev.yaml
+            group: shop-dev
+            refresh: true
+      discovery:
+        enabled: true
+        register-enabled: true
+        server-addr: ${nacos.server.addr:localhost:8848}
+        service: shop-user-dev
+        namespace: shop
+        group: shop-dev
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        file-extension: yaml
+        server-addr: ${nacos.server.addr:localhost:8848}
+        namespace: shop
+        group: shop-test
+        shared-configs:
+          - dataId: shop-user-test.yaml
+            group: shop-test
+            refresh: true
+      discovery:
+        enabled: true
+        register-enabled: true
+        server-addr: ${nacos.server.addr:localhost:8848}
+        service: shop-user-test
+        namespace: shop
+        group: shop-test
+---
+spring:
+  profiles: prod
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        file-extension: yaml
+        server-addr: ${nacos.server.addr:localhost:8848}
+        namespace: shop
+        group: shop-prod
+        shared-configs:
+          - dataId: shop-user-prod.yaml
+            group: shop-prod
+            refresh: true
+      discovery:
+        enabled: true
+        register-enabled: true
+        server-addr: ${nacos.server.addr:localhost:8848}
+        service: shop-user-prod
+        namespace: shop
+        group: shop-prod

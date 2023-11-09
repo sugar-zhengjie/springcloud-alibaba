@@ -37,6 +37,11 @@
             <artifactId>bucket4j-core</artifactId>
             <version>4.0.0</version>
         </dependency>
+        <!-- lb -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.zj</groupId>
             <artifactId>Commons</artifactId>

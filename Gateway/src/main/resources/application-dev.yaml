@@ -1,10 +1,8 @@
-Spring:
+server:
+  port: 9876
+spring:
   application:
     name: gateway
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
     gateway:
       discovery:
         locator:
@@ -14,7 +12,7 @@ Spring:
         - id: user  #自定义id,无意义但不能重复，最好跟服务名保持一致
           uri: lb://user  # 注册中心中的服务名
           predicates:
-            - Path=/user/api/** # 转发该路径
+            - Path=/user/** # 转发该路径
           filters:
             - StripPrefix=1 #必须加上StripPrefix=1，否则访问服务时会带上user
             - name: RequestRateLimiter #固定的
@@ -37,31 +35,31 @@ Spring:
         - id: order
             uri: lb://order
             predicates:
-              - Path=/order/api/**
+              - Path=/order/**
             filters:
               - StripPrefix=1
         - id: product
             uri: lb://product
             predicates:
-              - Path=/product/api/**
+              - Path=/product/**
             filters:
               - StripPrefix=1
         - id: shopcart
             uri: lb://shopcart
             predicates:
-              - Path=/shopcart/api/**
+              - Path=/shopcart/**
             filters:
               - StripPrefix=1
         - id: skill
             uri: lb://skill
             predicates:
-              - Path=/skill/api/**
+              - Path=/skill/**
             filters:
               - StripPrefix=1
         - id: stock
             uri: lb://stock
             predicates:
-              - Path=/stock/api/**
+              - Path=/stock/**
             filters:
               - StripPrefix=1
       # 经过gateWay网关时，需要在网关统一配置跨域请求，全部通过

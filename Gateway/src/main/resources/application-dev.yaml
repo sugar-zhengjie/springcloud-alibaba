@@ -1,0 +1,126 @@
+Spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true  #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务
+          lower-case-service-id: true  #是将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了
+      routes:
+        - id: user  #自定义id,无意义但不能重复，最好跟服务名保持一致
+          uri: lb://user  # 注册中心中的服务名
+          predicates:
+            - Path=/user/api/** # 转发该路径
+          filters:
+            - StripPrefix=1 #必须加上StripPrefix=1，否则访问服务时会带上user
+            - name: RequestRateLimiter #固定的
+              args:
+                key-resolver: '#{@pathKeyResolver}' # 用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。
+                redis-rate-limiter.replenishRate: 10 # 令牌桶每秒填充平均速率
+                redis-rate-limiter.burstCapacity: 30 # 令牌桶的总容量
+            - name: CircuitBreaker
+                args:
+                  fallbackUri: forward:/fallback
+                  name: myCircuitBreaker
+                  fallbackHeaders:
+                    foo: bar
+                  statusCodes:
+                    - SERVICE_UNAVAILABLE
+                    - GATEWAY_TIMEOUT
+                  routeId: user
+                  fallbackUriExpression: "'/fallback'"
+                  index: 1
+        - id: order
+            uri: lb://order
+            predicates:
+              - Path=/order/api/**
+            filters:
+              - StripPrefix=1
+        - id: product
+            uri: lb://product
+            predicates:
+              - Path=/product/api/**
+            filters:
+              - StripPrefix=1
+        - id: shopcart
+            uri: lb://shopcart
+            predicates:
+              - Path=/shopcart/api/**
+            filters:
+              - StripPrefix=1
+        - id: skill
+            uri: lb://skill
+            predicates:
+              - Path=/skill/api/**
+            filters:
+              - StripPrefix=1
+        - id: stock
+            uri: lb://stock
+            predicates:
+              - Path=/stock/api/**
+            filters:
+              - StripPrefix=1
+      # 经过gateWay网关时，需要在网关统一配置跨域请求，全部通过
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            allowed-methods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+    circuitbreaker:
+      resilience4j:
+        circuitbreaker:
+          instances:
+            myCircuitBreaker:
+              slidingWindowSize: 10
+              minimumNumberOfCalls: 20
+              permittedNumberOfCallsInHalfOpenState: 3
+              automaticTransitionFromOpenToHalfOpenEnabled: true
+              waitDurationInOpenState: 5s
+              failureRateThreshold: 50
+              eventConsumerBufferSize: 10
+              registerHealthIndicator: true
+
+logging:
+  level:
+    com:
+      alibaba:
+        cloud:
+          nacos:
+            refresh:
+              NacosContextRefresher: DEBUG
+      ibatis: DEBUG
+      netflix:
+        config:
+          sources:
+            URLConfigurationSource: ERROR
+        hystrix:
+          strategy:
+            properties:
+              HystrixPropertiesChainedProperty: DEBUG
+      ulisesbocchio:
+        jasyptspringboot:
+          EncryptablePropertySourceConverter: ERROR
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG
+        boot:
+          actuate:
+            endpoint:
+              EndpointId: ERROR
+    reactor:
+      netty:
+        http:
+          client: DEBUG
+    root: WARN

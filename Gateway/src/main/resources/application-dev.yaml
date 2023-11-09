@@ -15,23 +15,44 @@ spring:
             - Path=/user/** # 转发该路径
           filters:
             - StripPrefix=1 #必须加上StripPrefix=1，否则访问服务时会带上user
+            #限流 redis令牌桶
             - name: RequestRateLimiter #固定的
               args:
                 key-resolver: '#{@pathKeyResolver}' # 用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。
-                redis-rate-limiter.replenishRate: 10 # 令牌桶每秒填充平均速率
-                redis-rate-limiter.burstCapacity: 30 # 令牌桶的总容量
+                redis-rate-limiter.replenishRate: 1 # 令牌桶每秒填充平均速率
+                redis-rate-limiter.burstCapacity: 3 # 令牌桶的总容量
+            # 熔断
             - name: CircuitBreaker
-                args:
-                  fallbackUri: forward:/fallback
-                  name: myCircuitBreaker
-                  fallbackHeaders:
-                    foo: bar
-                  statusCodes:
-                    - SERVICE_UNAVAILABLE
-                    - GATEWAY_TIMEOUT
-                  routeId: user
-                  fallbackUriExpression: "'/fallback'"
-                  index: 1
+              args:
+                fallbackUri: forward:/fallback
+                name: myCircuitBreaker
+                fallbackHeaders:
+                  foo: bar
+                statusCodes:
+                  - SERVICE_UNAVAILABLE
+                  - GATEWAY_TIMEOUT
+                routeId: user
+                fallbackUriExpression: "'/fallback'"
+                index: 1
+            # 重试
+            - name: Retry
+              args:
+                # 请求重试次数，默认值是3
+                retries: 3
+                # 可以进行重试的状态码（500、404），
+                statuses: INTERNAL_SERVER_ERROR,NOT_FOUND
+                # 可以进行重试的Http Method
+                methods: GET,POST
+                # 重试的时间间隔配置
+                backoff:
+                  # 第一次重试的时间间隔
+                  firstBackoff: 100ms
+                  # 最大重试时间间隔
+                  maxBackoff: 500ms
+                  # 时间间隔因子
+                  factor: 2
+                  # 关闭根据上次重试时间间隔计算当前重试时间间隔功能
+                  basedOnPreviousValue: false
         - id: order
             uri: lb://order
             predicates:
@@ -75,19 +96,20 @@ spring:
               - DELETE
               - PUT
               - OPTION
-    circuitbreaker:
-      resilience4j:
-        circuitbreaker:
-          instances:
-            myCircuitBreaker:
-              slidingWindowSize: 10
-              minimumNumberOfCalls: 20
-              permittedNumberOfCallsInHalfOpenState: 3
-              automaticTransitionFromOpenToHalfOpenEnabled: true
-              waitDurationInOpenState: 5s
-              failureRateThreshold: 50
-              eventConsumerBufferSize: 10
-              registerHealthIndicator: true
+# 配置类已配置了CircuitBreaker，如果无配置类可通过配置文件配置
+#    circuitbreaker:
+#      resilience4j:
+#        circuitbreaker:
+#          instances:
+#            myCircuitBreaker:
+#              slidingWindowSize: 10
+#              minimumNumberOfCalls: 20
+#              permittedNumberOfCallsInHalfOpenState: 3
+#              automaticTransitionFromOpenToHalfOpenEnabled: true
+#              waitDurationInOpenState: 5s
+#              failureRateThreshold: 50
+#              eventConsumerBufferSize: 10
+#              registerHealthIndicator: true
 
 logging:
   level:

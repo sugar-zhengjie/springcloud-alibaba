@@ -52,6 +52,9 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date updatedDate;
 
+    @Version
+    private Integer version;
+
     public void insertMapper(Long createdBy) {
         this.createdBy = createdBy;
         this.updatedBy = createdBy;

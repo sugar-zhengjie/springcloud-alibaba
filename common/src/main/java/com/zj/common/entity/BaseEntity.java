@@ -52,6 +52,7 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date updatedDate;
 
+    @TableField("version")
     @Version
     private Integer version;
 

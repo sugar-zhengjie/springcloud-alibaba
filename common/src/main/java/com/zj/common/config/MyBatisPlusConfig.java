@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 public class MyBatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
-        System.out.println("1232132111111111111111111");
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         //添加分页插件
         interceptor.addInnerInterceptor(new

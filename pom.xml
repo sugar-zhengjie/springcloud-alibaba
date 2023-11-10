@@ -5,18 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zj</groupId>
-    <artifactId>ShopDemoParent</artifactId>
+    <artifactId>shop</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>Order</module>
-        <module>Product</module>
-        <module>User</module>
-        <module>Stock</module>
-        <module>ShopCart</module>
-        <module>Skill</module>
-        <module>Gateway</module>
-        <module>Commons</module>
+        <module>order</module>
+        <module>product</module>
+        <module>user</module>
+        <module>stock</module>
+        <module>shop-cart</module>
+        <module>skill</module>
+        <module>gateway</module>
+        <module>common</module>
     </modules>
     <description>电商父工程</description>
     <parent>

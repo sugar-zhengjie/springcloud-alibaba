@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.user.mapper.UserMapper" >
+
+    <!-- 自定义映射填充对象 -->
+    <resultMap id="UserInfoMap" type="com.zj.user.entity.UserVo">
+        <id column="id" property="userId"/>
+        <id column="cloudId" property="cloudId"/>
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="mobile" property="tel"/>
+        <result column="status" property="status"/>
+        <result column="created_date" property="createdDate"/>
+    </resultMap>
+
+    <select id="selectUserByOrder" resultMap="com.zj.user.entity.User">
+        select * from user where username = #{0} and status = #{1}
+    </select>
+
+    <select id="selectUserByAnnotation" resultMap="com.zj.user.entity.User">
+        select * from user
+        where user_name = #{userName} and status = #{status}
+    </select>
+
+    <select id="selectUserByMap" parameterType="java.util.Map" resultMap="com.zj.user.entity.User">
+        select * from user
+        where user_name = #{userName} and status = #{status}
+    </select>
+
+    <select id="selectUserByBean" parameterType="com.zj.user.entity.Use" resultMap="com.zj.user.entity.Use">
+        select * from user
+        where user_name = #{userName} and status = #{status}
+    </select>
+
+    <select id="selectEmailById" resultType="string">
+        select email from user where id = #{id}
+    </select>
+
+    <!--注意这里的 resultType 返回值类型是集合内存储数据的类型，不是 'list'-->
+    <select id="getAllUsers" resultType="com.zj.user.entity.User">
+        select * from user
+    </select>
+
+    <!-- 注意这里的 resultType 返回值类型是 'map'-->
+    <select id="getUserAsMapById" resultType="map">
+        select * from user where id = #{id}
+    </select>
+
+    <!--注意 resultType 返回值类型，不再是 'map'，而是 Map 的 value 对应的 JavaBean 类型-->
+    <select id="getAllUserAsMap" resultType="com.zj.user.entity.User">
+        select * from user
+    </select>
+
+    <resultMap id="UserMap" type="com.zj.user.entity.User">
+        <!--id为主键-->
+        <id column="id" property="id" />
+        <!--column 是数据库表的名称，property是对应实体类的属性名-->
+        <result column="username" property="username" />
+    </resultMap>
+
+    <!--查询所有-->
+    <select id="findAll"  resultMap="UserMap">
+        select id,username from user ;
+    </select>
+
+    <select id="queryUserIf" parameterType="map" resultType="com.zj.user.entity.User">
+        select * from user where 1=1
+        <if test="id != null" >
+            and id =#{id}
+        </if>
+        <if test="username != null" >
+            and username = #{username}
+        </if>
+    </select>
+
+    <!-- where 元素只会在至少有一个子元素的条件返回sql子句的情况下，才去插入"where" 子句-->
+    <select id="queryUserWhere" parameterType="map" resultType="com.zj.user.entity.User">
+        select * from user
+        <where>
+            <if test="id != null" >
+                id =#{id}
+            </if>
+            <if test="username != null" >
+                and username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <!--有时不想应用到所有的条件语句，而只想从中择其一项，针对这种情况，Mybatis提供了choose元素它有点像java中的switch语句 -->
+    <select id="queryUser" parameterType="map" resultType="com.zj.user.entity.User">
+        select * from user
+        <where>
+            <choose>
+                <when test="id != null" >
+                    id =#{id}
+                </when>
+                <when test="username != null" >
+                    and username = #{username}
+                </when>
+                <otherwise>
+                    and id= 4
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--这里set元素会动态前置set关键字，同时也会删除掉无关的逗号因为用了条件语句之后很可能就会生成的sql后面留下这些逗号-->
+    <update id="updatePwd">
+        update user
+        <set>
+            <if test="username !=null">username=#{username},</if>
+            <if test="password !=null">password=#{password},</if>
+        </set>
+        <where>
+            <choose>
+                <when test="id!=null">id=#{id}</when>
+                <when test="username!=null">username=#{username}</when>
+            </choose>
+        </where>
+    </update>
+
+<!--    <sql id="choose-when-id-name">-->
+<!--        <choose>-->
+<!--            <when test="id!=null">id=#{id}</when>-->
+<!--            <when test="name!=null">name=#{name}</when>-->
+<!--        </choose>-->
+<!--    </sql>-->
+<!--    <update id="updatePwd">-->
+<!--        update user-->
+<!--        <set>-->
+<!--            <if test="username !=null">username=#{username},</if>-->
+<!--            <if test="password !=null">password=#{password},</if>-->
+<!--        </set>-->
+<!--        <where>-->
+<!--            <include refid="choose-when-id-name"></include>-->
+<!--        </where>-->
+<!--    </update>-->
+
+
+    <select id="getUserByLimit" parameterType="map" resultType="com.zj.user.entity.User">
+        select * from user limit #{currIndex},#{pageSize}
+    </select>
+
+    <select id="findAllByPageHelper" resultMap="UserMap">
+        select id,username  from user ;
+    </select>
+
+    <insert id="insertMoreEmp">
+        insert into t_emp values
+        <foreach collection="emps” item="emp" separator=",">
+        (null, #{emp.empName}, #{emp.age}, #(emp.gender}, null)
+    </foreach>
+    </insert>
+
+    <!--
+    第一步:迭代集合，获取对应的item，和外部的()，拼接形成('zhangsan')
+    第二步:在之前的基础上拼接上逗号分隔符（'zhangsan'）,
+    第三步:继续迭代并拼接逗号 （'zhangsan'）,（'lisi'）,
+    第四步:继续迭代并拼接逗号 （'zhangsan'）,（'lisi'）,（'wangwu'）
+     -->
+<!--    <foreach collection="list" item="item" separator=",">-->
+<!--        （#{item}）-->
+<!--    </foreach>-->
+
+
+    <!--
+    第一步:拼接open指定的开始字符 (
+    第二步:迭代集合，拼接对应的item, ('zhangsan'
+    第三步:拼接separator指定的分隔符 ('zhangsan',
+    第四步:迭代集合，拼接对应的item, ('zhangsan','lisi'
+    第五步：拼接separator指定的分隔符('zhangsan','lisi',
+    第六步：拼接close指定的闭合字符  ('zhangsan','lisi','wangwu')
+     -->
+<!--    <foreach collection="list" item="item" open="(" separator="," close=")">-->
+<!--        #{item}-->
+<!--    </foreach>-->
+
+
+    <!--column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性-->
+<!--    <resultMap id="" type="">-->
+<!--        &lt;!&ndash;设置主键时使用，使用此标签配置映射关系(可能不止一个) &ndash;&gt;-->
+<!--        <id column="" jdbcType="" property="" />-->
+<!--        <result column="" jdbcType="" property=""/>-->
+
+<!--        <association property="" javaType="">-->
+<!--            <id column="" jdbcType="" property=""/>-->
+<!--            <result  column="" jdbcType="" property=""/>-->
+<!--        </association>-->
+
+<!--        &lt;!&ndash; 集合中的property须为oftype定义的pojo对象的属性&ndash;&gt;-->
+<!--        <collection property="pojo的集合属性" ofType="集合中的pojo对象">-->
+<!--            <id column="集合中pojo对象对应的表的主键字段" jdbcType="字段类型" property="集合中pojo对象的主键属性" />-->
+<!--            <result column="可以为任意表的字段" jdbcType="字段类型" property="集合中的pojo对象的属性" />-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+<!--    ===========================标签描述====================================-->
+
+<!--    column   &ndash;&gt; 表的主键字段,或者可以为查询语句中的别名字段-->
+<!--    jdbcType &ndash;&gt; 字段类型-->
+<!--    property &ndash;&gt; 映射pojo对象的主键属性-->
+
+<!--    result标签 &ndash;&gt; 属性用于配置映射关系时使用-->
+
+<!--    column   &ndash;&gt; 表的一个字段（可以为任意表的一个字段）-->
+<!--    jdbcType &ndash;&gt; 字段类型-->
+<!--    property &ndash;&gt; 映射到pojo对象的一个属性（须为type定义的pojo对象中的一个属性）-->
+
+<!--    association标签 &ndash;&gt;-->
+
+<!--    property &ndash;&gt; pojo的一个对象属性-->
+<!--    javaType &ndash;&gt; pojo关联的pojo对象-->
+
+<!--    id标签&ndash;&gt;-->
+
+<!--    column   &ndash;&gt; 关联pojo对象对应表的主键字段-->
+<!--    jdbcType &ndash;&gt; 字段类型-->
+<!--    property &ndash;&gt; 关联pojo对象的主席属性-->
+
+<!--    result标签 &ndash;&gt;-->
+
+<!--    column   &ndash;&gt; 任意表的字段-->
+<!--    jdbcType &ndash;&gt; 字段类型-->
+<!--    property &ndash;&gt; 关联pojo对象的属性-->
+
+<!--    select   &ndash;&gt;表示所需要的哪个类的查询语句-->
+<!--    column   &ndash;&gt;从resultMap中传过去用作查询参数-->
+<!--    ofType   &ndash;&gt;集合属性中的对象(可以不写)-->
+
+<!--    collection标签 &ndash;&gt;-->
+
+<!--    property &ndash;&gt; 表示pojo类集合中的属性-->
+<!--    select   &ndash;&gt;表示所需要的哪个类的查询语句-->
+<!--    column   &ndash;&gt;从resultMap中传过去用作查询的参数-->
+<!--    ofType   &ndash;&gt;集合属性中的对象(可以不写)-->
+
+<!--    ===========================标签细节====================================-->
+
+</mapper>

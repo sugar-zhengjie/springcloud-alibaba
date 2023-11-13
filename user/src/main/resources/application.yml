@@ -62,7 +62,16 @@ mybatis-plus:
   config-location: classpath:config/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.zj.entity
+  typeAliasesPackage: com.zj.user.entity
+#mybatis:
+#  mapper-locations: classpath*:mapper/*.xml
+#  type-aliases-package: com.example.demo.entity
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
 
 #接口文档前端
 knife4j:

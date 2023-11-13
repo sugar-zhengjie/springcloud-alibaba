@@ -5,6 +5,7 @@
 <configuration>
 
     <settings>
+        <!-- 数据库表的下划线转化为驼峰 user_detail ==> userDetail -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <!--<setting name="logImpl" value="STDOUT_LOGGING" />-->
     </settings>
@@ -17,5 +18,21 @@
         <typeAlias alias="ArrayList" type="java.util.ArrayList"/>
         <typeAlias alias="LinkedList" type="java.util.LinkedList"/>
     </typeAliases>
+
+    <!--每一个Mapper.XML都需要在Mybatis核心配置文件中注册 或者在配置文件中配置-->
+<!--    <mappers>-->
+<!--        <mapper resource="mybatis/mapper/user/UserMapper.xml"/>-->
+<!--    </mappers>-->
+
+    <plugins>
+        <!--5.0版本使用这个-->
+<!--        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>-->
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/>
+            <property name="reasonable" value="true"/>
+            <property name="supportMethodsArguments" value="true"/>
+            <property name="params" value="count=countSql"/>
+        </plugin>
+    </plugins>
 
 </configuration>

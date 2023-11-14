@@ -1,8 +1,36 @@
 server:
   port: 12001
 spring:
+  application:
+    name: stock
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 180000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
   cloud:
-    nacos:
-      discovery:
-        service: stock
-        server-addr: localhost:8848
+    seata:
+      enabled: true
+      application-id: stock
+      tx-service-group: zj_shop_tx_group
+      enable-auto-data-source-proxy: true
+      registry:
+        type: nacos
+        nacos:
+          server-addr: 127.0.0.1:8848
+      config:
+        type: nacos
+        nacos:
+          namespace:
+          server-addr: 127.0.0.1:8848
+
+feign:
+  hystrix:
+    enabled: true

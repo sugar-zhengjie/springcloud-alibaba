@@ -145,13 +145,6 @@
         select id,username  from user ;
     </select>
 
-    <insert id="insertMoreEmp">
-        insert into t_emp values
-        <foreach collection="emps” item="emp" separator=",">
-        (null, #{emp.empName}, #{emp.age}, #(emp.gender}, null)
-    </foreach>
-    </insert>
-
     <!--
     第一步:迭代集合，获取对应的item，和外部的()，拼接形成('zhangsan')
     第二步:在之前的基础上拼接上逗号分隔符（'zhangsan'）,

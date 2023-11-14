@@ -60,6 +60,21 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>2.2.4.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+            <!--自带的这个jar版本可能和服务器的Seata不匹配，排除掉了自行导入和服务器版本匹配的依赖-->
+            <exclusions>
+                <exclusion>
+                    <groupId>io.seata</groupId>
+                    <artifactId>seata-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+        </dependency>
         <!--junit-->
         <dependency>
             <groupId>junit</groupId>

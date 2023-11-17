@@ -1,0 +1,11 @@
+system:
+  keyPair:
+    keyLocation: zj.jks
+    keyPassword: zzzz1111
+    alias: sugar
+oauth-list:
+  staticFiles:
+  whiteUrls:
+    - "/oauth/public_key"
+  authUrls:
+  tokenUrls:

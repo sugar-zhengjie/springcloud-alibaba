@@ -17,6 +17,7 @@
         <module>skill</module>
         <module>gateway</module>
         <module>common</module>
+        <module>auth</module>
     </modules>
     <description>电商父工程</description>
     <parent>

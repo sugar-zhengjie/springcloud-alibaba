@@ -110,7 +110,14 @@ spring:
 #              failureRateThreshold: 50
 #              eventConsumerBufferSize: 10
 #              registerHealthIndicator: true
-
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            jwk-set-uri: 'http://zj.com/oauth/public_key'
 logging:
   level:
     com:
@@ -144,3 +151,21 @@ logging:
         http:
           client: DEBUG
     root: WARN
+
+# 多租户配置
+tenant:
+  # 是否开启租户模式
+  enable: true
+  # 需要排除的多租户的表
+  exclusionTable:
+    - "t_sys_district"
+    - "t_sys_tenant"
+    - "t_sys_role"
+    - "t_sys_resource"
+    - "t_sys_role_resource"
+  # 租户字段名称
+  column: tenant_id
+# 网关放行白名单，配置白名单路径
+white-list:
+  urls:
+    - "/oauth/public_key"

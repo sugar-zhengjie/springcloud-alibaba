@@ -18,6 +18,7 @@
         <module>gateway</module>
         <module>common</module>
         <module>auth</module>
+        <module>workflow</module>
     </modules>
     <description>电商父工程</description>
     <parent>

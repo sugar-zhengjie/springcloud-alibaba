@@ -19,9 +19,6 @@ import java.util.Map;
  */
 public class AesUtils {
 
-    /**
-     * @author chen
-     */
     public enum EncodeType {
         /**
          * base64

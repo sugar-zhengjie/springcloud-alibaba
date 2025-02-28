@@ -1,0 +1,88 @@
+#spring配置
+spring:
+  application:
+    name: sharding-jdbc
+sharding:
+  jdbc:
+    datasource:
+      names: sharding-jdbc1-master,sharding-jdbc1-slave1,sharding-jdbc1-slave2,sharding-jdbc2-master,sharding-jdbc2-slave1,sharding-jdbc2-slave2
+      sharding-jdbc1-master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.128:3306/sharding-jdbc?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      sharding-jdbc1-slave1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.129:3306/sharding-jdbc?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      sharding-jdbc1-slave2:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.130:3306/sharding-jdbc?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      sharding-jdbc2-master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.131:3306/sharding-jdbc?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      sharding-jdbc2-slave1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.132:3306/sharding-jdbc?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+      sharding-jdbc2-slave2:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.223.133:3306/sharding-jdbc?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT
+        username: root
+        password: root
+    config:
+      sharding:
+        default-database-strategy:
+          inline:
+            sharding-column: id
+            algorithm-expression: ds_$->{id % 2}
+        tables:
+          user:
+            actual-data-nodes: ds_$->{0..1}.user_$->{0..4}
+            table-strategy:
+              inline:
+                sharding-column: id
+                algorithm-expression: user_$->{id % 5}
+            key-generator-column-name: id
+          t_order:
+            actual-data-nodes: ds_0.t_order_$->{0..1}
+            table-strategy:
+              inline:
+                sharding-column: order_id
+                algorithm-expression: t_order_$->{order_id % 2}
+          t_order_item:
+            actual-data-nodes: ds_0.t_order_item_$->{0..1}
+            table-strategy:
+              inline:
+                sharding-column: order_id
+                algorithm-expression: t_order_item_$->{order_id % 2}
+        binding-tables:
+          - t_order
+          - t_order_item
+        master-slave-rules:
+          ds_0:
+            master-data-source-name: sharding-jdbc1-master
+            slave-data-source-names: sharding-jdbc1-slave1, sharding-jdbc1-slave2
+          ds_1:
+            master-data-source-name: sharding-jdbc2-master
+            slave-data-source-names: sharding-jdbc2-slave1, sharding-jdbc2-slave2
+      props:
+        sql:
+          show: true
+mybatis:
+  config-location: classpath:config/mybatis-config.xml
+
+
+

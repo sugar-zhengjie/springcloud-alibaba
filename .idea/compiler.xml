@@ -5,35 +5,46 @@
       <directory url="file://$PROJECT_DIR$/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Order" />
-        <module name="Product" />
-        <module name="Skill" />
-        <module name="User" />
-        <module name="ShopCart" />
-        <module name="Stock" />
+        <module name="product" />
+        <module name="sharding-jdbc" />
+        <module name="common" />
+        <module name="shop-cart" />
+        <module name="auth" />
+        <module name="skill" />
+        <module name="stock" />
+        <module name="user" />
+        <module name="gateway" />
+        <module name="order" />
+        <module name="seata" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Common" target="1.8" />
       <module name="Order-Serv" target="1.8" />
       <module name="OrderServ" target="1.8" />
+      <module name="workflow" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Common" options="-parameters" />
-      <module name="Order" options="-parameters" />
       <module name="Order-Serv" options="-parameters" />
-      <module name="Product" options="-parameters" />
-      <module name="ShopCart" options="-parameters" />
       <module name="ShopDemoParent" options="" />
-      <module name="Skill" options="-parameters" />
-      <module name="Stock" options="-parameters" />
-      <module name="User" options="-parameters" />
+      <module name="auth" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="order" options="-parameters" />
+      <module name="product" options="-parameters" />
+      <module name="seata" options="-parameters" />
+      <module name="sharding-jdbc" options="-parameters" />
+      <module name="shop-cart" options="-parameters" />
+      <module name="skill" options="-parameters" />
+      <module name="stock" options="-parameters" />
+      <module name="user" options="-parameters" />
+      <module name="workflow" options="" />
     </option>
   </component>
 </project>

@@ -96,6 +96,9 @@ spring:
               - DELETE
               - PUT
               - OPTION
+    sentinel: # 配置sentinel
+      transport:
+        dashboard: localhost:8080
 # 配置类已配置了CircuitBreaker，如果无配置类可通过配置文件配置
 #    circuitbreaker:
 #      resilience4j:

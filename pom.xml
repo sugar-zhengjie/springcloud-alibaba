@@ -18,7 +18,9 @@
         <module>gateway</module>
         <module>common</module>
         <module>auth</module>
-        <module>workflow</module>
+        <module>sharding-jdbc</module>
+        <module>seata</module>
+        <!--        <module>workflow</module>-->
     </modules>
     <description>电商父工程</description>
     <parent>
@@ -76,6 +78,7 @@
         <dependency>
             <groupId>io.seata</groupId>
             <artifactId>seata-spring-boot-starter</artifactId>
+            <version>1.4.2</version>
         </dependency>
         <!--junit-->
         <dependency>

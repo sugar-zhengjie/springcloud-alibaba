@@ -1,0 +1,46 @@
+server:
+  port: 8081 # 每个服务的端口不同
+
+spring:
+  application:
+    name: seata
+  datasource:
+  # 数据源配置，如url, username, password等
+
+seata:
+  config:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: seata-study
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: seata-study
+  service:
+    vgroup-mapping:
+      your-service-group: default
+    # 其他配置...
+  # 启用Seata Tcc
+  enabled: true
+  tcc:
+    # 配置TCC模式的事务管理器Bean名称
+    manager: tccAction
+  data-source-proxy-mode: XA
+
+# XA数据源配置
+xa:
+  datasource:
+    ds1:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/your_database1
+      username: your_username
+      password: your_password
+    ds2:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/your_database2
+      username: your_username
+      password: your_password

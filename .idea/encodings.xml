@@ -2,16 +2,30 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Order-Serv/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Order/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/OrderServ/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/OrderServ/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Product/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/ShopCart/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Skill/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Stock/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/User/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/order/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/product/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/product/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/seata/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sharding-jdbc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shop-cart/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shop-cart/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/skill/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/skill/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/stock/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/stock/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../workflow/workflow/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../workflow/workflow/src/main/resources" charset="UTF-8" />
   </component>
 </project>
